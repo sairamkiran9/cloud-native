@@ -1,0 +1,24 @@
+version: "3.8"
+
+services:
+  grafana:
+    image: grafana/grafana-enterprise
+    container_name: bas-grafana
+    restart: unless-stopped
+    environment:
+      - GF_SERVER_ROOT_URL=http://my.grafana.server/
+      - GF_INSTALL_PLUGINS=marcusolsson-csv-datasource
+      - GF_SECURITY_ALLOW_EMBEDDING=true
+      - GF_AUTH_ANONYMOUS_ENABLED=false
+      - GF_SECURITY_ADMIN_PASSWORD=12345
+      - GF_PLUGIN_ALLOW_LOCAL_MODE=true
+      - GF_DISABLE_LOGIN_FORM=true
+    ports:
+      - '3000:3000'
+    volumes:
+      - ./resource:/shared_volume
+      - grafana_storage:/var/lib/grafana
+      - ./provisioning:/etc/grafana/provisioning
+
+volumes:
+  grafana_storage:
